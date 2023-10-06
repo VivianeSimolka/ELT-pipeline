@@ -107,7 +107,7 @@ models:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0
-      - name: transaction_status
+      - name: store_transaction_number
         tests:
           - not_null
       - name: card_number
@@ -137,6 +137,9 @@ models:
         tests:
           - not_null
       - name: customer_id
+        tests:
+          - not_null
+      - name: days_since_store_onboarding
         tests:
           - not_null
 
@@ -175,6 +178,11 @@ models:
         tests:
           - not_null
       - name: transaction_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: avg_transacted_amount
         tests:
           - not_null
           - dbt_expectations.expect_column_values_to_be_between:
