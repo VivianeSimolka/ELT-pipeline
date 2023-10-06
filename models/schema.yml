@@ -1,0 +1,230 @@
+
+version: 2
+
+models:
+
+  - name: ing_device
+    columns:
+      - name: device_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: device_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1,2,3,4,5]
+      - name: store_id
+        tests:
+          - not_null
+
+  - name: ing_store
+    columns:
+      - name: store_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        tests:
+          - not_null
+      - name: store_address
+        tests:
+          - not_null
+      - name: store_city
+        tests:
+          - not_null
+      - name: store_country
+        tests:
+          - not_null
+      - name: store_onboarding_timestamp
+        description: "Timestamp when a store got a fully functioning device for the first time"
+        tests:
+          - not_null
+      - name: store_typology
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+
+  - name: ing_transaction
+    columns:
+      - name: transaction_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: device_id
+        tests:
+          - not_null
+      - name: product_name
+        tests:
+          - not_null
+      - name: product_sku
+        tests:
+          - not_null
+      - name: category_name
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: transaction_status
+        tests:
+          - not_null
+      - name: card_number
+        tests:
+          - not_null
+      - name: cvv
+        tests:
+          - not_null
+      - name: transaction_timestamp
+        tests:
+          - not_null
+
+  - name: stg_successful_transaction_detailed
+    columns:
+      - name: transaction_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        tests:
+          - not_null
+      - name: product_sku
+        tests:
+          - not_null
+      - name: category_name
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: transaction_status
+        tests:
+          - not_null
+      - name: card_number
+      - name: cvv
+      - name: transaction_timestamp
+        tests:
+          - not_null
+      - name: device_id
+        tests:
+          - not_null
+      - name: device_type
+        tests:
+          - not_null
+      - name: store_id
+        tests:
+          - not_null
+      - name: store_name
+        tests:
+          - not_null
+      - name: store_address
+      - name: store_city
+      - name: store_country
+      - name: store_onboarding_timestamp
+        tests:
+          - not_null
+      - name: store_typology
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+
+  - name: store_overview
+    columns:
+      - name: store_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: store_name
+        tests:
+          - not_null
+      - name: store_address
+        tests:
+          - not_null
+      - name: store_city
+        tests:
+          - not_null
+      - name: store_country
+        tests:
+          - not_null
+      - name: store_onboarding_timestamp
+        tests:
+          - not_null
+      - name: store_typology
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+      - name: device_count
+        tests:
+          - not_null
+      - name: transaction_count
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: first_transaction_timestamp
+        tests:
+          - not_null
+      - name: latest_transaction_timestamp
+        tests:
+          - not_null
+
+  - name: product_overview
+    columns:
+      - name: product_sku
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        tests:
+          - not_null
+      - name: category_name
+        tests:
+          - not_null
+      - name: transaction_count
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+  - name: device_overview
+    columns:
+      - name: device_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: device_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1,2,3,4,5]
+      - name: transaction_count
+        tests:
+          - not_null
+      - name: transaction_amount
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
