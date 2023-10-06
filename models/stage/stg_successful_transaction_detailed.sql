@@ -66,7 +66,6 @@ final as (
         product_sku,
         category_name,
         transaction_amount,
-        transaction_status,
         card_number,
         cvv,
         transaction_timestamp,
