@@ -18,3 +18,6 @@ clean-targets:
 
 models:
   su_homework:
+    +required_tests: {".*": 3, "not_null": 1, "unique.|unique_*|unique*": 1}
+    kpis:
+      +required_tests: {".*": 0}
