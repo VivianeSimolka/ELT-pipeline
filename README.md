@@ -1,41 +1,57 @@
-# SumUp Homework
+# SumUp Technical Test
 
 ## Goal of the exercise
 
 Based on the three provided files (device, store and transaction), provide following KPIs:
-● Top 10 stores per transacted amount
-● Top 10 products sold
-● Average transacted amount per store, typology and country
-● Percentage of transactions per device type
-● Average time for a store to perform its 5 first transactions
+- Top 10 stores per transacted amount
+- Top 10 products sold
+- Average transacted amount per store, typology and country
+- Percentage of transactions per device type
+- Average time for a store to perform its 5 first transactions
 
-## Set-up
-
-To mirror SumUp set-up, I set-up the project with dbt and Snowflake.
-For sake of simplicity, I loaded the source files as seeds, after converting those to csv.
 
 ## Assumptions
 
-### Transactions
-
-The transaction file contains two timestamps: **created_at** and **happened_at**.
-85% of records have a earlier **happened_at** timestamp as **created_at** ones.
+The transaction file contains two timestamps: `created_at` and `happened_at`.
 Considering the range of timespan between the two timestamps (going up to above 12,000 hours), it could not be a time zone difference.
-For sake of simplicity, I decided to only use the **created_at** timestamp that I consider as the transaction time (as it minimized the number of transaction that happened before the store **created_at** field).
+For sake of simplicity, I decided to only use the `created_at` timestamp that I consider as the transaction time (as it minimized the number of transaction that happened before the store `created_at` field).
 
 Considering the KPI requested, I assumed that we were only interested in successful transactions.
-(Although it would be interesting to look into).
+(Although it would be interesting to look into failed and rejected transactions).
 
 Considering there is no information on product quantity sold, I am assuming each transaction correspond on only one item sold.
 
+The field `created_at` from the store file is considered to be the onboarding time (timestamp when the store has for the first time a fully functional device, named as `store_onboarding_timestamp`).
+
 ## Methodology
 
+To mirror SumUp set-up, the project is using **dbt** and **Snowflake**.
+
+1. **Sources**
+
+For sake of simplicity, source files are loaded as seeds, after converting those to csv.
+
+2. **Ingestion**
+
+Ingestion models, with renamed fields for more explicity and casting field with timestamp information to type timestamp.
+
+3. **Stage**
+
+All ingestion models are joigned together to get detailed transaction information.
+
+4. **Mart**
+
+Overview with transaction KPIs by store, product and device.
+
+5. **KPIs**
+
+Models provided all answer to the technical test.
 
 ## Results
 
 ### Top 10 stores per transacted amount
 
-Model **top_ten_stores_per_transaction_amount**
+Model `top_ten_stores_per_transaction_amount`
 
 | STORE_ID | STORE_NAME                     | TRANSACTION_AMOUNT |
 |----------|--------------------------------|--------------------|
@@ -52,7 +68,7 @@ Model **top_ten_stores_per_transaction_amount**
 
 ### Top 10 products sold
 
-Model **top_ten_product_sold**
+Model `top_ten_product_sold`
 
 | PRODUCT_SKU   | PRODUCT_NAME    | TRANSACTION_COUNT |
 |---------------|-----------------|-------------------|
@@ -71,7 +87,7 @@ Model **top_ten_product_sold**
 
 ##### Average transacted amount per store
 
-Model **avg_transacted_amount_per_store**
+Model `avg_transacted_amount_per_store`
 
 | STORE_ID | STORE_NAME                         | AVG_TRANSACTED_AMOUNT |
 |----------|------------------------------------|-----------------------|
@@ -158,7 +174,7 @@ Model **avg_transacted_amount_per_store**
 
 ##### Average transacted amount per typology
 
-Model **avg_transacted_amount_per_typology**
+Model `avg_transacted_amount_per_typology`
 
 | STORE_TYPOLOGY | AVG_TRANSACTION_AMOUNT |
 |----------------|------------------------|
@@ -173,7 +189,7 @@ Model **avg_transacted_amount_per_typology**
 
 ##### Average transacted amount per country
 
-Model **avg_transacted_amount_per_country**
+Model `avg_transacted_amount_per_country`
 
 | STORE_COUNTRY  | AVG_TRANSACTION_AMOUNT |
 |----------------|------------------------|
@@ -211,7 +227,7 @@ Model **avg_transacted_amount_per_country**
 
 ### Percentage of transactions per device type
 
-Model **device_type_contribution**
+Model `device_type_contribution`
 
 | DEVICE_TYPE | DEVICE_TYPE_TRANSACTION_PERCENTAGE |
 |-------------|------------------------------------|
@@ -223,7 +239,7 @@ Model **device_type_contribution**
 
 ### Average time for a store to perform its 5 first transactions
 
-Model **time_to_fifth_transaction**
+Model `time_to_fifth_transaction`
 
 There are a significant amount of transaction being made before the store onboarding time.
 
@@ -236,7 +252,7 @@ Although I calculated an average of 128 days, I would not communicate this KPI t
 There are a significant amount of transaction being made before the store onboarding time, leading to the conclusion that something is wrong whether in my calculations or on the base data.
 The 128 days are calculated excluding any stores that have a their 5th transaction before their onboarding time.
 
-As an alternative, I looked into the time between the 1st and the 5th transaction (model **time_between_first_and_fifth_transaction**), as the I cannot ensure the accuracy of the field **store_onboarding_timestamp**.
+As an alternative, I looked into the time between the 1st and the 5th transaction (model `time_between_first_and_fifth_transaction`), as the I cannot ensure the accuracy of the field `store_onboarding_timestamp`.
 Even though it does not answer the question, it is a more reliable KPI, as we know that at the time of the first transaction, the store as a functioning device in its possession.
 
 | DAYS_FROM_FIRST_TO_FIFTH |
