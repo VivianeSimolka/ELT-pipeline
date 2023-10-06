@@ -31,15 +31,15 @@ To mirror SumUp set-up, the project is using **dbt** and **Snowflake**.
 
 For sake of simplicity, source files are loaded as seeds, after converting those to csv.
 
-2. **Ingestion**
+2. **Ingestion layer**
 
 Ingestion models, with renamed fields for more explicity and casting field with timestamp information to type timestamp.
 
-3. **Stage**
+3. **Stage layer**
 
-All ingestion models are joigned together to get detailed transaction information.
+All ingestion models are joined together to get detailed transaction information.
 
-4. **Mart**
+4. **Mart layer**
 
 Overview with transaction KPIs by store, product and device.
 
@@ -249,7 +249,7 @@ The calculation is excluding any stores that have a their 5th transaction before
 | 128                               |
 
 Although I calculated an average of 128 days, I would not communicate this KPI to any decision maker.
-There are a significant amount of transaction being made before the store onboarding time, leading to the conclusion that something is wrong whether in my calculations or on the base data.
+As the store onboarding timestamp doesn't seem very reliable, there could be something is wrong whether in my calculations or on the base data.
 
 As an alternative, I looked into the time between the 1st and the 5th transaction (model `time_between_first_and_fifth_transaction`), as the I cannot ensure the accuracy of the field `store_onboarding_timestamp`.
 Even though it does not answer the question, it is a more reliable KPI, as we know that at the time of the first transaction, the store as a functioning device in its possession.
@@ -263,11 +263,11 @@ Even though it does not answer the question, it is a more reliable KPI, as we kn
 
 If I would have more time and access to information, I would first look into:
 
-1. Investigating store onboarding and transaction timestamp
+1. **Investigating store onboarding and transaction timestamp**
 
 Starting with validating the assumption and column name definition, and if the issue remains, moving on to investigating potential issue with the source data.
 
-3. Create an automatic ingestion
+2. **Create an automatic ingestion**
 
 In a real setting, the source data would not be static.
 Hence the need to establish a connection.
@@ -275,7 +275,7 @@ Hence the need to establish a connection.
 For small data sources, I would use a cloud base platform such as Fivetran or Airbyte, as it is extremely fast to set-up.
 At the scale of SumUp (millions or billions of records), such tool would be too expensive and a custom made ingestion would be necessary.
 
-4. Looking into cancelled and rejected transactions
+3. **Looking into cancelled and rejected transactions**
 
 In the scope of this exercise, all KPIs required to filter transaction to keep only successful ones (accepted).
 However, there would be value in investigating cancelled and refused ones.
