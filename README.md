@@ -61,6 +61,7 @@ To Make the project run locally, follow those steps:
       warehouse: <warehouse>
   target: dev
   >> ~/.dbt/profiles.yml```
+  - run `dbt build`
 
 ## Models
 
@@ -329,13 +330,26 @@ Example `schema.yml`:
 
 ```
 
-4. **Create an automatic ingestion**
+4. **Make the pipeline run on production**
+
+- Extraction mechanism
 
 In a real setting, the source data would not be static.
 Hence the need to establish a connection.
 
 For small data sources, I would use a cloud base platform such as Fivetran or Airbyte, as it is extremely fast to set-up.
-At the scale of SumUp (millions or billions of records), such tool would be too expensive and a custom made ingestion would be necessary.
+At the scale of SumUp (millions or billions of records), such tool would be too expensive and a custom made extraction script would be necessary.
+
+- Orchestration
+
+The ELT pipeline would need to be orchestrated, to run the extraction and models automatically.
+For this, tools such as **Airflow** or **Perfect** could be used.
+The pipeline run interval would need to be chosen as the best trade-off between business needs and costs.
+
+- Data accessibility
+
+To ensure that the business stakeholder can make data driven decision in the most efficient way, they need access to the data.
+The KPIs requested by the exercise (among others) would need to be accessible through a data visualization tool, such as **Tableau** or **Looker**.
 
 5. **Looking into cancelled and rejected transactions**
 
