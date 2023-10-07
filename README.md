@@ -32,11 +32,15 @@ To Make the project run locally, follow those steps:
 - run `pip install -r requirements.txt`
 - create an account on Snowflake (if you do not have already one)
 - if you do not have yet a dbt profile set-up:
+
   - run `mkdir ~/.dbt`
+
   - run `touch ~/.dbt/profiles.yml`
+
   - run
   ```
   echo -e
+  \```
   snowflake:
   outputs:
     dev:
@@ -59,8 +63,10 @@ To Make the project run locally, follow those steps:
       type: snowflake
       user: <user>
       warehouse: <warehouse>
-  target: dev
-  >> ~/.dbt/profiles.yml```
+  target: dev\```
+  >> ~/.dbt/profiles.yml
+  ```
+
   - run `dbt build`
 
 ## Models
@@ -348,7 +354,7 @@ The pipeline run interval would need to be chosen as the best trade-off between 
 
 - Data accessibility
 
-To ensure that the business stakeholder can make data driven decision in the most efficient way, they need access to the data.
+To ensure that the business stakeholder can make data driven decision in the most efficient way, and reduce the need for ad-hoc requests, they need direct access to the data.
 The KPIs requested by the exercise (among others) would need to be accessible through a data visualization tool, such as **Tableau** or **Looker**.
 
 5. **Looking into cancelled and rejected transactions**
