@@ -23,9 +23,45 @@ Considering there is no information on product quantity sold, I am assuming each
 
 The field `created_at` from the store file is considered to be the onboarding time (timestamp when the store has for the first time a fully functional device, named as `store_onboarding_timestamp`).
 
-## Methodology
+## Set-up
 
 To mirror SumUp set-up, the project is using **dbt** and **Snowflake**.
+
+To Make the project run locally, follow those steps:
+- create a new virtual environment
+- run `pip install -r requirements.txt`
+- create an account on Snowflake (if you do not have already one)
+- if you do not have yet a dbt profile set-up:
+  - run `mkdir ~/.dbt`
+  - run `touch ~/.dbt/profiles.yml`
+  - run `echo -e
+  ```
+  snowflake:
+  outputs:
+    dev:
+      account: <snowflake-account>
+      database: <database>
+      password: <password>
+      role: <role>
+      schema: <dev-schema>
+      threads: 4
+      type: snowflake
+      user: <user>
+      warehouse: <warehouse>
+    prod:
+      account: <snowflake-account>
+      database: <database>
+      password: <password>
+      role: <role>
+      schema: <prod-schema>
+      threads: 4
+      type: snowflake
+      user: <user>
+      warehouse: <warehouse>
+  target: dev
+  ``` >> ~/.dbt/profiles.yml`
+
+## Models
 
 1. **Sources**
 
@@ -267,7 +303,32 @@ If I would have more time and access to information, I would first look into:
 
 Starting with validating the assumption and column name definition, and if the issue remains, moving on to investigating potential issue with the source data.
 
-2. **Create an automatic ingestion**
+3. **Add proper documentation**
+
+Define all columns in a `docs.md` file and link the `schema.yml` to it.
+
+Example `docs.md`:
+
+```
+
+{% docs store_onboarding_timestamp %}
+
+Timestamp when the store has for the first time a fully functional device.
+
+{% enddocs %}
+
+```
+Example `schema.yml`:
+
+```
+  - name: store_overview
+    columns:
+      - name: store_onboarding_timestamp
+        description: "{{ doc('store_onboarding_timestamp') }}"
+
+```
+
+4. **Create an automatic ingestion**
 
 In a real setting, the source data would not be static.
 Hence the need to establish a connection.
@@ -275,7 +336,7 @@ Hence the need to establish a connection.
 For small data sources, I would use a cloud base platform such as Fivetran or Airbyte, as it is extremely fast to set-up.
 At the scale of SumUp (millions or billions of records), such tool would be too expensive and a custom made ingestion would be necessary.
 
-3. **Looking into cancelled and rejected transactions**
+5. **Looking into cancelled and rejected transactions**
 
 In the scope of this exercise, all KPIs required to filter transaction to keep only successful ones (accepted).
 However, there would be value in investigating cancelled and refused ones.
