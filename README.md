@@ -37,10 +37,10 @@ To Make the project run locally, follow those steps:
 
   - run `touch ~/.dbt/profiles.yml`
 
-  - run
+  - run (without the backlash and with your snowflake account information)
   ```
   echo -e
-  ~~~
+  \```
   snowflake:
   outputs:
     dev:
@@ -63,7 +63,7 @@ To Make the project run locally, follow those steps:
       type: snowflake
       user: <user>
       warehouse: <warehouse>
-  target: dev~~~
+  target: dev\```
   >> ~/.dbt/profiles.yml
   ```
 
