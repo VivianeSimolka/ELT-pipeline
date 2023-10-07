@@ -34,8 +34,9 @@ To Make the project run locally, follow those steps:
 - if you do not have yet a dbt profile set-up:
   - run `mkdir ~/.dbt`
   - run `touch ~/.dbt/profiles.yml`
-  - run `echo -e
+  - run
   ```
+  echo -e
   snowflake:
   outputs:
     dev:
@@ -59,7 +60,7 @@ To Make the project run locally, follow those steps:
       user: <user>
       warehouse: <warehouse>
   target: dev
-  ``` >> ~/.dbt/profiles.yml`
+  >> ~/.dbt/profiles.yml```
 
 ## Models
 
