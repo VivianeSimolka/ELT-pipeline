@@ -66,6 +66,7 @@ To Make the project run locally, follow those steps:
   target: dev\```
   >> ~/.dbt/profiles.yml
   ```
+  - run `dbt deps`
 
   - run `dbt build`
 
