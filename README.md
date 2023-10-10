@@ -1,4 +1,4 @@
-# SumUp Technical Test
+# ELT pipeline
 
 ## Goal of the exercise
 
@@ -25,7 +25,7 @@ The field `created_at` from the store file is considered to be the onboarding ti
 
 ## Set-up
 
-To mirror SumUp set-up, the project is using **dbt** and **Snowflake**.
+The project is using **dbt** and **Snowflake**.
 
 To Make the project run locally, follow those steps:
 - create a new virtual environment
@@ -344,7 +344,7 @@ In a real setting, the source data would not be static.
 Hence the need to establish a connection.
 
 For small data sources, I would use a cloud base platform such as Fivetran or Airbyte, as it is extremely fast to set-up.
-At the scale of SumUp (millions or billions of records), such tool would be too expensive and a custom made extraction script would be necessary.
+At larger scale (millions or billions of records), such tool would be too expensive and a custom made extraction script would be necessary.
 
 - Orchestration
 
