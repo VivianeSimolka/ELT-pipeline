@@ -16,8 +16,6 @@ final as (
         category_name,
         amount as transaction_amount,
         status as transaction_status,
-        card_number,
-        cvv,
         cast(created_at as timestamp) as transaction_timestamp
     from input
 
