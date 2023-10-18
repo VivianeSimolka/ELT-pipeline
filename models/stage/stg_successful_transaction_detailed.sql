@@ -28,8 +28,6 @@ transaction_store_device_joined as (
         transactions.category_name,
         transactions.transaction_amount,
         transactions.transaction_status,
-        transactions.card_number,
-        transactions.cvv,
         transactions.transaction_timestamp,
 
         stores.store_id,
@@ -66,8 +64,6 @@ final as (
         product_sku,
         category_name,
         transaction_amount,
-        card_number,
-        cvv,
         transaction_timestamp,
 
         rank() over (partition by store_id
